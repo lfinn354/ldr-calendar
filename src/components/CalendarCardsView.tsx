@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Entry, Entries } from '../types';
 import { dummy_card_data, dummy_entry_data, dummy_entries } from '../dummy_data';
 import CalendarCard from './CalendarCard'
@@ -10,21 +10,38 @@ interface CalendarGridProps {
 
 export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps) {
   const [startDate, setStartDate] = useState(new Date());
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
   const shiftDays = (amount: number) => {
-    const newDate = new Date(startDate);
-    newDate.setDate(newDate.getDate() + amount);
-    setStartDate(newDate);
+    setSlideDirection(amount > 0 ? 'right' : 'left');
+    setTimeout(() => {
+      const newDate = new Date(startDate);
+      newDate.setDate(newDate.getDate() + amount);
+      setStartDate(newDate);
+      setSlideDirection(null);
+    }, animationDuration);
   };
 
-  const displayDays = Array.from({ length: 5 }, (_, i) => {
+  const displayDays = Array.from({ length: 9 }, (_, i) => {
     const d = new Date(startDate);
-    d.setDate(d.getDate() + i - 2);
+    d.setDate(d.getDate() + i - 4);
     return d;
   });
 
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const animationDuration = 750; // Match this with the CSS transition duration
+
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const handleJumpToDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.value; // Format: "YYYY-MM-DD"
+    if (selected) {
+      // 2. Convert string back to Date object and update state
+      // We add 'T00:00:00' to prevent timezone shifts
+      setStartDate(new Date(selected + 'T00:00:00'));
+    }
+  };
 
   return (
     <div style={{ position: 'relative', width: '100vw', overflow: 'hidden' }}>
@@ -35,8 +52,14 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
         display: 'flex',
         justifyContent: 'center',
         marginTop: '32px',
-        marginBottom: '16px',
+        marginBottom: '32px',
         gap: '50px',
+        transition: slideDirection ? `transform ${animationDuration}ms ease-in-out` : 'none',
+        transform: slideDirection === 'right'
+          ? 'translateX(-694px)' // Shift left to show right items
+          : slideDirection === 'left'
+            ? 'translateX(694px)'
+            : 'translateX(0)',
       }}>
         {displayDays.map((date) => {
           // 1. Generate the same key format used in your dummy_entries
@@ -57,11 +80,20 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
         })}
       </div>
 
-      <button onClick={() => shiftDays(2)} style={navButtonStyle({ right: '50px' })}> ▶ </button>
+      <button onClick={() => shiftDays(2)} style={navButtonStyle({ right: '50px', cursor: 'pointer' })}> ▶ </button>
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '25px' }}>
         <button onClick={() => setStartDate(new Date())} style={{ width: '100px', height: '50px', cursor: 'pointer' }}>
           Today
+        </button>
+        <input
+          type="date"
+          ref={dateInputRef}
+          onChange={handleJumpToDate}
+          style={{ visibility: 'hidden', width: 0, height: 0, position: 'absolute' }}
+        />
+        <button onClick={() => dateInputRef.current?.showPicker()} style={{ width: '120px', height: '50px', cursor: 'pointer' }}>
+          Jump To Date
         </button>
       </div>
     </div>
