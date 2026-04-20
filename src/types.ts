@@ -38,4 +38,6 @@ export interface CalendarCardProps {
   entry?: Entry;
   colorLeft: string;
   colorRight: string;
+  status: 'past' | 'today' | 'future';
+  progress?: number; // 0 to 1, only relevant for 'today'
 }

@@ -30,13 +30,13 @@ export default function Layout({ currentView, setCurrentView, entries, updateEnt
         margin: '16px 0',
         marginBottom: '30px'
       }}>
-        <button onClick={() => setCurrentView('today')}>Today</button>
+        <button onClick={() => setCurrentView('today')}>Notepad</button>
         <button onClick={() => setCurrentView('calendar')}>Calendar</button>
         <button onClick={() => setCurrentView('archive')}>Archive</button>
       </nav>
       <main>
         {currentView === 'calendar' && <CalendarGrid entries={dummy_entries} updateEntry={updateEntry} />}
-        {currentView === 'today' && <div>Today view</div>}
+        {currentView === 'today' && <div>Notepad view</div>}
         {currentView === 'archive' && <div>Archive view</div>}
       </main>
     </div>

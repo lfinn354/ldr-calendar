@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Entry, Entries } from '../types';
-import { dummy_card_data, dummy_entry_data, dummy_entries } from '../dummy_data';
+import { dummy_card_data } from '../dummy_data';
 import CalendarCard from './CalendarCard'
 
 interface CalendarGridProps {
@@ -12,6 +12,32 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
   const [startDate, setStartDate] = useState(new Date());
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
+  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dateInputRef = useRef<HTMLInputElement>(null);
+
+  const displayDays = Array.from({ length: 9 }, (_, i) => {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i - 4);
+    return d;
+  });
+
+  const getDayProgress = () => {
+    const now = new Date();
+    const totalSecondsInDay = 24 * 60 * 60;
+    const secondsPassed = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+    return (secondsPassed / totalSecondsInDay) * 100;
+  };
+
+  const handleJumpToDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.value;
+    if (selected) {
+      setStartDate(new Date(selected + 'T00:00:00'));
+    }
+  };
+
+  const animationDistance = 690;
+  const animationDuration = 750;
   const shiftDays = (amount: number) => {
     setSlideDirection(amount > 0 ? 'right' : 'left');
     setTimeout(() => {
@@ -20,27 +46,6 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
       setStartDate(newDate);
       setSlideDirection(null);
     }, animationDuration);
-  };
-
-  const displayDays = Array.from({ length: 9 }, (_, i) => {
-    const d = new Date(startDate);
-    d.setDate(d.getDate() + i - 4);
-    return d;
-  });
-
-  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const animationDuration = 750; // Match this with the CSS transition duration
-
-  const dateInputRef = useRef<HTMLInputElement>(null);
-
-  const handleJumpToDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.value; // Format: "YYYY-MM-DD"
-    if (selected) {
-      // 2. Convert string back to Date object and update state
-      // We add 'T00:00:00' to prevent timezone shifts
-      setStartDate(new Date(selected + 'T00:00:00'));
-    }
   };
 
   return (
@@ -56,26 +61,37 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
         gap: '50px',
         transition: slideDirection ? `transform ${animationDuration}ms ease-in-out` : 'none',
         transform: slideDirection === 'right'
-          ? 'translateX(-694px)' // Shift left to show right items
+          ? `translateX(-${animationDistance}px)` // length of card + border + padding + gap * 2
           : slideDirection === 'left'
-            ? 'translateX(694px)'
+            ? `translateX(${animationDistance}px)`
             : 'translateX(0)',
       }}>
         {displayDays.map((date) => {
           // 1. Generate the same key format used in your dummy_entries
           const dateKey = date.toISOString().split('T')[0];
+          const todayKey = new Date().toISOString().split('T')[0];
+
+          const isToday = dateKey === todayKey;
+          const isPast = dateKey < todayKey;
+          const status = isToday ? 'today' : isPast ? 'past' : 'future';
+          const progress = isToday ? getDayProgress() : 0;
+
           const dayEntry = entries[dateKey];
 
           return (
-            <CalendarCard
-              key={dateKey}
-              month={months[date.getMonth()]}
-              day={date.getDate()}
-              dayOfWeek={dayNames[date.getDay()]}
-              entry={dayEntry}
-              colorLeft={dummy_card_data.colorLeft}
-              colorRight={dummy_card_data.colorRight}
-            />
+            <div key={dateKey}>
+              <CalendarCard
+                key={dateKey}
+                month={months[date.getMonth()]}
+                day={date.getDate()}
+                dayOfWeek={dayNames[date.getDay()]}
+                entry={dayEntry}
+                colorLeft={dummy_card_data.colorLeft}
+                colorRight={dummy_card_data.colorRight}
+                status={status}
+                progress={progress}
+              />
+            </div>
           );
         })}
       </div>

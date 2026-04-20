@@ -35,7 +35,8 @@ export const dummy_card_data: CalendarCardProps = {
     dayOfWeek: 'Monday',
     entry: dummy_entry_data,
     colorLeft: '#ffcccc',
-    colorRight: '#ccffcc'
+    colorRight: '#ccffcc',
+    status: 'today'
 }
 
 const getDateString = (daysOffset = 0) => {
@@ -53,7 +54,7 @@ export const dummy_entries: Entries = {
             h: "Yesterday was great!"
         }
     } as Entry, // Casting here tells TS "I know this fits the interface"
-    [getDateString(1)]: {
+    [getDateString(-2)]: {
         ...dummy_entry_data,
         photoUrl: 'https://i.redd.it/8slfcoxlzsg81.jpg'
     }
