@@ -30,12 +30,12 @@ export type Entries = Record<string, Entry>
 
 export type View = 'today' | 'calendar' | 'archive' 
 
+
 export interface CalendarCardProps {
   month: string;
   day: number;
   dayOfWeek: string;
-  verticalImages: [string, string];
-  albumCovers: [string, string];
+  entry?: Entry;
   colorLeft: string;
   colorRight: string;
 }

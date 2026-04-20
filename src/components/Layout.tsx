@@ -1,5 +1,5 @@
 import { Heart, Clock, Calendar, Archive } from 'lucide-react'
-import { Entry, CalendarCardProps, View } from '../types'
+import { Entry, View } from '../types'
 import { dummy_entries } from '../dummy_data'
 import CalendarGrid from './CalendarCardsView'
 

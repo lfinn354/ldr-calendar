@@ -1,7 +1,28 @@
 import React from 'react';
-import { CalendarCardProps } from '../types'
+import { CalendarCardProps } from '../types';
 
-const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, verticalImages, albumCovers, colorLeft, colorRight }) => {
+const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entry, colorLeft, colorRight }) => {
+  const photo1 = entry?.photoUrl;
+  const album1 = entry?.song?.albumCover;
+
+  // Helper for the gray placeholder box
+  const PlaceholderBox = ({ width, height }: { width: string, height: string }) => (
+    <div style={{
+      width,
+      height,
+      backgroundColor: '#e0e0e0',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#888',
+      fontSize: '12px'
+    }}>
+      Empty
+    </div>
+  );
+  
   return (
     <div style={{
       width: '275px',
@@ -38,49 +59,27 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, vert
       </div>
       
       <div style={{ display: 'flex', gap: '35px', marginBottom: '20px' }}>
-        {/* <img src={verticalImages[0]} alt="Vertical 1" style={{ width: '100px', height: '150px', objectFit: 'cover' }} />
-        <img src={verticalImages[1]} alt="Vertical 2" style={{ width: '100px', height: '150px', objectFit: 'cover' }} /> */}
-        <div
-          style={{
-            width: '100px',
-            height: '150px',
-            backgroundColor: '#e0e0e0', // Light gray color
-            border: '1px solid #ccc',   // Optional: adds a slight outline
-            display: 'inline-block'     // Keeps it behaving like an image in the layout
-          }}
-        />
-        <div
-          style={{
-            width: '100px',
-            height: '150px',
-            backgroundColor: '#e0e0e0', // Light gray color
-            border: '1px solid #ccc',   // Optional: adds a slight outline
-            display: 'inline-block'     // Keeps it behaving like an image in the layout
-          }}
-        />
+        {photo1 ? (
+          <img src={photo1} alt="Entry" style={{ width: '100px', height: '150px', objectFit: 'cover' }} />
+        ) : (
+          <PlaceholderBox width="100px" height="150px" />
+        )}
+        
+        {/* Second slot is currently always a placeholder per your design */}
+        <PlaceholderBox width="100px" height="150px" />
       </div>
+
+      {/* Row 2: Album Covers */}
       <div style={{ display: 'flex', gap: '35px' }}>
-        {/* <img src={albumCovers[0]} alt="Album 1" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
-        <img src={albumCovers[1]} alt="Album 2" style={{ width: '100px', height: '100px', objectFit: 'cover' }} /> */}
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: '#e0e0e0', // Light gray color
-            border: '1px solid #ccc',   // Optional: adds a slight outline
-            display: 'inline-block'     // Keeps it behaving like an image in the layout
-          }}
-        />
-        <div
-          style={{
-            width: '100px',
-            height: '100px',
-            backgroundColor: '#e0e0e0', // Light gray color
-            border: '1px solid #ccc',   // Optional: adds a slight outline
-            display: 'inline-block'     // Keeps it behaving like an image in the layout
-          }}
-        />
+        {album1 ? (
+          <img src={album1} alt="Album" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+        ) : (
+          <PlaceholderBox width="100px" height="100px" />
+        )}
+        
+        <PlaceholderBox width="100px" height="100px" />
       </div>
+      
     </div>
   );
 };
