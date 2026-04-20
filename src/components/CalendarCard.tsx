@@ -1,7 +1,8 @@
 import React from 'react';
 import { CalendarCardProps } from '../types';
 
-const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entry, colorLeft, colorRight, status, progress }) => {
+const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entry, colorRight, status, progress }) => {
+  const colorLeft = entry?.color || '#e0e0e0'; // Default to light grey if no color provided
   const photo1 = entry?.photoUrl;
   const album1 = entry?.song?.albumCover;
 

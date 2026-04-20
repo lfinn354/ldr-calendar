@@ -22,6 +22,7 @@ export interface Trivia {
 export interface Entry {
   song?: Song
   reflection?: Reflection
+  color? : string
   photoUrl?: string
   trivia?: Trivia[]
 }
@@ -36,7 +37,6 @@ export interface CalendarCardProps {
   day: number;
   dayOfWeek: string;
   entry?: Entry;
-  colorLeft: string;
   colorRight: string;
   status: 'past' | 'today' | 'future';
   progress?: number; // 0 to 1, only relevant for 'today'

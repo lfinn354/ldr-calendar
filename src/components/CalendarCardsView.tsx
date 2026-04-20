@@ -86,7 +86,6 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
                 day={date.getDate()}
                 dayOfWeek={dayNames[date.getDay()]}
                 entry={dayEntry}
-                colorLeft={dummy_card_data.colorLeft}
                 colorRight={dummy_card_data.colorRight}
                 status={status}
                 progress={progress}

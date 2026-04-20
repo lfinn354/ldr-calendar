@@ -14,6 +14,7 @@ export const dummy_entry_data: Entry = {
         l: 'I wish I had gone for a walk.',
         s: 'I learned that sometimes it\'s okay to just relax and enjoy the moment.'
     },
+    color: '#FFD700',
     photoUrl: 'https://pbs.twimg.com/media/Fpi4gncaIAA2kIv.jpg',
     trivia: [
         {
@@ -34,7 +35,6 @@ export const dummy_card_data: CalendarCardProps = {
     day: 1,
     dayOfWeek: 'Monday',
     entry: dummy_entry_data,
-    colorLeft: '#ffcccc',
     colorRight: '#ccffcc',
     status: 'today'
 }
@@ -52,10 +52,12 @@ export const dummy_entries: Entries = {
         reflection: {
             ...dummy_entry_data.reflection,
             h: "Yesterday was great!"
-        }
+        },
+        color: '#d679b1',
     } as Entry, // Casting here tells TS "I know this fits the interface"
     [getDateString(-2)]: {
         ...dummy_entry_data,
+        color: '#79b1d6',
         photoUrl: 'https://i.redd.it/8slfcoxlzsg81.jpg'
     }
 };
