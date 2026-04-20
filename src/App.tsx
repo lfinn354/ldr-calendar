@@ -1,12 +1,15 @@
 import { useState } from 'react'
+import { Entry } from './types'
 import Layout from './components/Layout'
-import './App.css'
+
+type Entries = Record<string, Entry>
+type View = 'today' | 'calendar' | 'archive'
 
 function App() {
-  const [entries, setEntries] = useState({})
-  const [currentView, setCurrentView] = useState('calendar')
+  const [entries, setEntries] = useState<Entries>({})
+  const [currentView, setCurrentView] = useState<View>('calendar')
 
-  const updateEntry = (date, entryData) => {
+  const updateEntry = (date: string, entryData: Entry) => {
     setEntries(prev => ({
       ...prev,
       [date]: {
@@ -17,11 +20,10 @@ function App() {
   }
 
   return (
-    <Layout 
-      currentView={currentView} 
+    <Layout
+      currentView={currentView}
       setCurrentView={setCurrentView}
       entries={entries}
-      setEntries={setEntries}
       updateEntry={updateEntry}
     />
   )
