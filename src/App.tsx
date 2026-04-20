@@ -1,9 +1,6 @@
 import { useState } from 'react'
-import { Entry } from './types'
+import { Entry, Entries, View } from './types'
 import Layout from './components/Layout'
-
-type Entries = Record<string, Entry>
-type View = 'today' | 'calendar' | 'archive'
 
 function App() {
   const [entries, setEntries] = useState<Entries>({})

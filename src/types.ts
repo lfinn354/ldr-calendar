@@ -26,6 +26,10 @@ export interface Entry {
   trivia?: Trivia[]
 }
 
+export type Entries = Record<string, Entry>
+
+export type View = 'today' | 'calendar' | 'archive' 
+
 export interface CalendarCardProps {
   month: string;
   day: number;

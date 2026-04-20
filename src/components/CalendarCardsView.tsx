@@ -1,30 +1,12 @@
 import { useState } from 'react';
-import { Entry } from '../types'
-import { CalendarCardProps } from '../types'
+import { Entry, Entries, CalendarCardProps } from '../types';
+import { dummy_card_data, dummy_entry_data, dummy_entries } from '../dummy_data';
 import CalendarCard from './CalendarCard'
-
-type Entries = Record<string, Entry>
 
 interface CalendarGridProps {
   entries: Entries
   updateEntry: (date: string, entryData: Entry) => void
 }
-
-const dummy_card_data: CalendarCardProps = {
-    month: 'JAN',
-    day: 1,
-    dayOfWeek: 'Monday',
-    verticalImages: [
-      'https://via.placeholder.com/100x150?text=Vertical+1',
-      'https://via.placeholder.com/100x150?text=Vertical+2'
-    ],
-    albumCovers: [
-      'https://via.placeholder.com/100x100?text=Album+1',
-      'https://via.placeholder.com/100x100?text=Album+2'
-    ],
-    colorLeft: '#ffcccc',
-    colorRight: '#ccffcc'
-  }
 
 export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps) {
   const [startDate, setStartDate] = useState(new Date());
@@ -47,12 +29,7 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
   return (
     <div style={{ position: 'relative', width: '100vw', overflow: 'hidden' }}>
       
-      <button 
-        onClick={() => shiftDays(-2)}
-        style={navButtonStyle({ left: '50px' })}
-      >
-        ◀
-      </button>
+      <button onClick={() => shiftDays(-2)} style={navButtonStyle({ left: '50px' })}> ◀ </button>
 
       <div style={{
         display: 'flex',
@@ -72,19 +49,11 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
         ))}
       </div>
 
-      <button 
-        onClick={() => shiftDays(2)}
-        style={navButtonStyle({ right: '50px' })}
-      >
-        ▶
-      </button>
+      <button onClick={() => shiftDays(2)} style={navButtonStyle({ right: '50px' })}> ▶ </button>
 
       {/* Today Button */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <button 
-          onClick={() => setStartDate(new Date())}
-          style={{ width: '100px', height: '50px', cursor: 'pointer' }}
-        >
+        <button onClick={() => setStartDate(new Date())} style={{ width: '100px', height: '50px', cursor: 'pointer' }}>
           Today
         </button>
       </div>
