@@ -24,6 +24,8 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
   const person1 = entryArray[0];
   const person2 = entryArray[1];
 
+  console.log('Rendering CalendarCard with first entry:', entryArray[0]);
+
   const colorLeft = person1?.color || '#e0e0e0'; // Default to light grey if no color provided
   const colorRight = person2?.color || '#e0e0e0'; // Default to light grey if no color provided
   // cant store photos and albums here right now since stored in DB as strings and placeholder box is not a string
@@ -111,7 +113,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
           ) : (
             <PlaceholderBox w="100px" h="100px" type="Album" />
           )}
-          
+
           {person2?.song?.albumCover ? (
             <img src={person2.song.albumCover} alt="Album" style={imgStyle('100px', '100px')} />
           ) : (

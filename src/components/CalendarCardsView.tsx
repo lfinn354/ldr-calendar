@@ -27,7 +27,7 @@ export default function CalendarGrid({ entries, setEntries }: CalendarGridProps)
     displayDays.forEach((date) => {
       const dateKey = date.toISOString().split('T')[0];
 
-      const entriesRef = collection(db, "calendar_days", dateKey, "entries");
+      const entriesRef = collection(db, "calendar-days", dateKey, "entries");
       const q = query(entriesRef);
 
       const unsub = onSnapshot(q, (snapshot) => {
@@ -35,6 +35,8 @@ export default function CalendarGrid({ entries, setEntries }: CalendarGridProps)
         snapshot.forEach((doc) => {
           dayEntries.push({ id: doc.id, ...doc.data() });
         });
+
+        console.log(`🔥 Firestore Update for ${dateKey}:`, dayEntries);
 
         setEntries((prev) => ({
           ...prev,

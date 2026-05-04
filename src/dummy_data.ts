@@ -22,7 +22,6 @@ export const dummy_card_data: CalendarCardProps = {
     day: 1,
     dayOfWeek: 'Monday',
     entryArray: [dummy_entry_data], 
-    colorRight: '#ccffcc',
     status: 'today'
 }
 
