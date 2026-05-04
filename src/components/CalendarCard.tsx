@@ -1,22 +1,7 @@
 import React from 'react';
 import { CalendarCardProps } from '../types';
 
-const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entry, colorRight, status, progress }) => {
-  const colorLeft = entry?.color || '#e0e0e0'; // Default to light grey if no color provided
-  const photo1 = entry?.photoUrl;
-  const album1 = entry?.song?.albumCover;
-
-  // 1. Determine the Border (Outer Background)
-  let outerBackground = '#000'; // Default Past
-  if (status === 'today') {
-    outerBackground = `conic-gradient(#FFD700 ${progress}%, #ffffff 0%)`;
-  } else if (status === 'future') {
-    outerBackground = '#f9f9f9';
-  }
-
-  const innerBackground = status === 'future'
-    ? '#f9f9f9'
-    : `linear-gradient(to right, ${colorLeft} 45%, ${colorRight} 55%)`;
+const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entryArray = [], status, progress = 0 }) => {
 
   const PlaceholderBox = ({ w, h, type }: { w: string, h: string, type: string }) => (
     <div style={{
@@ -36,13 +21,41 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
     </div>
   );
 
+  const person1 = entryArray[0];
+  const person2 = entryArray[1];
+
+  const colorLeft = person1?.color || '#e0e0e0'; // Default to light grey if no color provided
+  const colorRight = person2?.color || '#e0e0e0'; // Default to light grey if no color provided
+  // cant store photos and albums here right now since stored in DB as strings and placeholder box is not a string
+
+  // Styles for consistency
+  const imgStyle = (w: string, h: string) => ({
+    width: w,
+    height: h,
+    objectFit: 'cover' as const,
+    borderRadius: '6px',
+    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+    border: '1px solid rgba(255,255,255,0.5)'
+  });
+
+  let outerBackground = '#000'; // Default Past
+  if (status === 'today') {
+    outerBackground = `conic-gradient(#FFD700 ${progress}%, #ffffff 0%)`;
+  } else if (status === 'future') {
+    outerBackground = '#f9f9f9';
+  }
+
+  const innerBackground = status === 'future'
+    ? '#f9f9f9'
+    : `linear-gradient(to right, ${colorLeft} 45%, ${colorRight} 55%)`;
+
   return (
     <div style={{
-      width: '280px', // Slightly wider to account for the border padding
+      width: '280px',
       height: '405px',
       flexShrink: 0,
       borderRadius: '14px',
-      padding: '5px', // This is the border thickness
+      padding: '5px',
       background: outerBackground,
       display: 'flex',
       alignItems: 'center',
@@ -78,22 +91,32 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
 
         {/* Row 1: Photos */}
         <div style={{ display: 'flex', gap: '35px', marginBottom: '20px' }}>
-          {photo1 ? (
-            <img src={photo1} alt="Entry" style={{ width: '100px', height: '150px', objectFit: 'cover' }} />
+          {person1?.photoUrl ? (
+            <img src={person1.photoUrl} alt="P1" style={imgStyle('100px', '150px')} />
           ) : (
             <PlaceholderBox w="100px" h="150px" type="Photo" />
           )}
-          <PlaceholderBox w="100px" h="150px" type="Photo" />
+
+          {person2?.photoUrl ? (
+            <img src={person2.photoUrl} alt="P2" style={imgStyle('100px', '150px')} />
+          ) : (
+            <PlaceholderBox w="100px" h="150px" type="Photo" />
+          )}
         </div>
 
         {/* Row 2: Albums */}
         <div style={{ display: 'flex', gap: '35px' }}>
-          {album1 ? (
-            <img src={album1} alt="Album" style={{ width: '100px', height: '100px', objectFit: 'cover' }} />
+          {person1?.song?.albumCover ? (
+            <img src={person1.song.albumCover} alt="Album" style={imgStyle('100px', '100px')} />
           ) : (
             <PlaceholderBox w="100px" h="100px" type="Album" />
           )}
-          <PlaceholderBox w="100px" h="100px" type="Album" />
+          
+          {person2?.song?.albumCover ? (
+            <img src={person2.song.albumCover} alt="Album" style={imgStyle('100px', '100px')} />
+          ) : (
+            <PlaceholderBox w="100px" h="100px" type="Album" />
+          )}
         </div>
 
       </div>
