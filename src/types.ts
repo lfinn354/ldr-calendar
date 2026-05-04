@@ -9,35 +9,30 @@ export interface Song {
 export interface Reflection {
     id: string;
     h: string;
-    l: string;
-    s: string;
-}
-
-export interface Trivia {
-    id: string;
-    question: string;
-    answer: string;
 }
 
 export interface Entry {
   song?: Song
   reflection?: Reflection
   color? : string
-  photoUrl?: string
-  trivia?: Trivia[]
+  photoURL?: string
+  trivia?: string
 }
 
-export type Entries = Record<string, Entry>
+export type Entries = Record<string, Entry[]>
 
 export type View = 'today' | 'calendar' | 'archive' 
-
 
 export interface CalendarCardProps {
   month: string;
   day: number;
   dayOfWeek: string;
-  entry?: Entry;
-  colorRight: string;
+  entryArray?: Entry[];
   status: 'past' | 'today' | 'future';
   progress?: number; // 0 to 1, only relevant for 'today'
+}
+
+export interface CalendarGridProps {
+  entries: Entries
+  setEntries: React.Dispatch<React.SetStateAction<Entries>>; // Changed from updateEntry
 }

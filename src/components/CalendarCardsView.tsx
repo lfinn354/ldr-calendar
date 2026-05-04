@@ -1,14 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Entry, Entries } from '../types';
+import { collection, onSnapshot, query } from 'firebase/firestore';
+import { db } from '../firebase';
+import { Entry, Entries, CalendarGridProps } from '../types';
 import { dummy_card_data } from '../dummy_data';
 import CalendarCard from './CalendarCard'
 
-interface CalendarGridProps {
-  entries: Entries
-  updateEntry: (date: string, entryData: Entry) => void
-}
-
-export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps) {
+export default function CalendarGrid({ entries, setEntries }: CalendarGridProps) {
   const [startDate, setStartDate] = useState(new Date());
   const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
 
@@ -21,6 +18,37 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
     d.setDate(d.getDate() + i - 4);
     return d;
   });
+
+  // --- FIRESTORE REAL-TIME SYNC ---
+  useEffect(() => {
+    // Array to store cleanup functions for the listeners
+    const unsubscribes: (() => void)[] = [];
+
+    displayDays.forEach((date) => {
+      const dateKey = date.toISOString().split('T')[0];
+
+      const entriesRef = collection(db, "calendar-days", dateKey, "entries");
+      const q = query(entriesRef);
+
+      const unsub = onSnapshot(q, (snapshot) => {
+        const dayEntries: any[] = [];
+        snapshot.forEach((doc) => {
+          dayEntries.push({ id: doc.id, ...doc.data() });
+        });
+
+        setEntries((prev) => ({
+          ...prev,
+          [dateKey]: dayEntries, // Populate the date with the array of user inputs
+        }));
+      });
+
+      unsubscribes.push(unsub);
+    });
+
+    // Cleanup: Stop listening to these 9 days when we move or unmount
+    return () => unsubscribes.forEach((unsub) => unsub());
+  }, [startDate]);
+  // --------------------------------
 
   const getDayProgress = () => {
     const now = new Date();
@@ -36,8 +64,8 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
     }
   };
 
-  const animationDistance = 690;
-  const animationDuration = 750;
+  const animationDistance = 290 * 2 + 50 * 2;
+  const animationDuration = 1000;
   const shiftDays = (amount: number) => {
     setSlideDirection(amount > 0 ? 'right' : 'left');
     setTimeout(() => {
@@ -59,7 +87,7 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
         marginTop: '32px',
         marginBottom: '32px',
         gap: '50px',
-        transition: slideDirection ? `transform ${animationDuration}ms ease-in-out` : 'none',
+        transition: slideDirection ? `transform ${animationDuration}ms cubic-bezier(.63,.07,.25,1)` : 'none',
         transform: slideDirection === 'right'
           ? `translateX(-${animationDistance}px)` // length of card + border + padding + gap * 2
           : slideDirection === 'left'
@@ -76,7 +104,7 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
           const status = isToday ? 'today' : isPast ? 'past' : 'future';
           const progress = isToday ? getDayProgress() : 0;
 
-          const dayEntry = entries[dateKey];
+          const dayEntryArray = entries[dateKey] || [];
 
           return (
             <div key={dateKey}>
@@ -85,8 +113,7 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
                 month={months[date.getMonth()]}
                 day={date.getDate()}
                 dayOfWeek={dayNames[date.getDay()]}
-                entry={dayEntry}
-                colorRight={dummy_card_data.colorRight}
+                entryArray={dayEntryArray}
                 status={status}
                 progress={progress}
               />

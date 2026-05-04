@@ -69,7 +69,7 @@ JSON
   "date": "2026-04-20",
   "dailyStats": {
     "song": { "title": "Nightshift", "artist": "Lucy Dacus", "artUrl": "..." },
-    "photoUrl": "...",
+    "photoURL": "...",
     "reflection": {
       "highlight": "Found a cool new coffee shop.",
       "lowlight": "Long lecture at JHU.",

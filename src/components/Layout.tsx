@@ -1,16 +1,16 @@
-import { Heart, Clock, Calendar, Archive } from 'lucide-react'
-import { Entry, View } from '../types'
-import { dummy_entries } from '../dummy_data'
+import { useState } from 'react'
+import { Entries, Entry, View } from '../types'
 import CalendarGrid from './CalendarCardsView'
 
 interface LayoutProps {
   currentView: View
   setCurrentView: (view: View) => void
-  entries: Record<string, Entry>
-  updateEntry: (date: string, entryData: Entry) => void
+  initialEntries: Entries
 }
 
-export default function Layout({ currentView, setCurrentView, entries, updateEntry }: LayoutProps) {
+export default function Layout({ currentView, setCurrentView, initialEntries }: LayoutProps) {
+  const [entries, setEntries] = useState<Entries>(initialEntries);
+  
   return (
     <div>
       <header style={{
@@ -35,7 +35,7 @@ export default function Layout({ currentView, setCurrentView, entries, updateEnt
         <button onClick={() => setCurrentView('archive')}>Archive</button>
       </nav>
       <main>
-        {currentView === 'calendar' && <CalendarGrid entries={dummy_entries} updateEntry={updateEntry} />}
+        {currentView === 'calendar' && <CalendarGrid entries={entries} setEntries={setEntries} />}
         {currentView === 'today' && <div>Notepad view</div>}
         {currentView === 'archive' && <div>Archive view</div>}
       </main>

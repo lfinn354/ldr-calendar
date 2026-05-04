@@ -84,7 +84,7 @@ When you save an entry on, say, April 20, 2026, it's stored as:
       l: "Work was stressful",
       s: "Unexpected call from a friend"
     },
-    photoUrl: "https://photo-url.jpg",
+    photoURL: "https://photo-url.jpg",
     trivia: [
       { question: "What's my fav food?", answer: "Pizza" },
       { question: "What city?", answer: "NYC" },

@@ -95,7 +95,7 @@ The app uses React's `useState` hook for state management. Entries are stored in
       l: "Lowlight text", 
       s: "Surprising thing text"
     },
-    photoUrl: "https://photo-url.jpg",
+    photoURL: "https://photo-url.jpg",
     trivia: [
       { question: "Q1?", answer: "A1" },
       { question: "Q2?", answer: "A2" },
