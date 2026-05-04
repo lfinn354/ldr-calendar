@@ -30,6 +30,8 @@ export interface CalendarCardProps {
   entryArray?: Entry[];
   status: 'past' | 'today' | 'future';
   progress?: number; // 0 to 1, only relevant for 'today'
+  onClick?: () => void;
+  isSelected?: boolean;
 }
 
 export interface CalendarGridProps {
