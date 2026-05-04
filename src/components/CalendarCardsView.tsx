@@ -36,8 +36,8 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
     }
   };
 
-  const animationDistance = 690;
-  const animationDuration = 750;
+  const animationDistance = 290 * 2 + 50 * 2;
+  const animationDuration = 1000;
   const shiftDays = (amount: number) => {
     setSlideDirection(amount > 0 ? 'right' : 'left');
     setTimeout(() => {
@@ -59,7 +59,7 @@ export default function CalendarGrid({ entries, updateEntry }: CalendarGridProps
         marginTop: '32px',
         marginBottom: '32px',
         gap: '50px',
-        transition: slideDirection ? `transform ${animationDuration}ms ease-in-out` : 'none',
+        transition: slideDirection ? `transform ${animationDuration}ms cubic-bezier(.63,.07,.25,1)` : 'none',
         transform: slideDirection === 'right'
           ? `translateX(-${animationDistance}px)` // length of card + border + padding + gap * 2
           : slideDirection === 'left'
