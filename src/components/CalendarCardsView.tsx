@@ -36,8 +36,6 @@ export default function CalendarGrid({ entries, setEntries }: CalendarGridProps)
           dayEntries.push({ id: doc.id, ...doc.data() });
         });
 
-        console.log(`🔥 Firestore Update for ${dateKey}:`, dayEntries);
-
         setEntries((prev) => ({
           ...prev,
           [dateKey]: dayEntries, // Populate the date with the array of user inputs

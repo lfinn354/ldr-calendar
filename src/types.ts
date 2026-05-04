@@ -15,7 +15,7 @@ export interface Entry {
   song?: Song
   reflection?: Reflection
   color? : string
-  photoUrl?: string
+  photoURL?: string
   trivia?: string
 }
 

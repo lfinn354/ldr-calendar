@@ -24,7 +24,7 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
   const person1 = entryArray[0];
   const person2 = entryArray[1];
 
-  console.log('Rendering CalendarCard with first entry:', entryArray[0]);
+  console.log(`Rendering CalendarCard from day ${month} ${day} with entries:`, entryArray);
 
   const colorLeft = person1?.color || '#e0e0e0'; // Default to light grey if no color provided
   const colorRight = person2?.color || '#e0e0e0'; // Default to light grey if no color provided
@@ -93,14 +93,14 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
 
         {/* Row 1: Photos */}
         <div style={{ display: 'flex', gap: '35px', marginBottom: '20px' }}>
-          {person1?.photoUrl ? (
-            <img src={person1.photoUrl} alt="P1" style={imgStyle('100px', '150px')} />
+          {person1?.photoURL ? (
+            <img src={person1.photoURL} alt="P1" style={imgStyle('100px', '150px')} />
           ) : (
             <PlaceholderBox w="100px" h="150px" type="Photo" />
           )}
 
-          {person2?.photoUrl ? (
-            <img src={person2.photoUrl} alt="P2" style={imgStyle('100px', '150px')} />
+          {person2?.photoURL ? (
+            <img src={person2.photoURL} alt="P2" style={imgStyle('100px', '150px')} />
           ) : (
             <PlaceholderBox w="100px" h="150px" type="Photo" />
           )}
