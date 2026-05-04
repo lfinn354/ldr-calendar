@@ -1,7 +1,7 @@
 import React from 'react';
 import { CalendarCardProps } from '../types';
 
-const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entryArray = [], status, progress = 0 }) => {
+const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entryArray = [], status, progress = 0, onClick, isSelected = false }) => {
 
   const PlaceholderBox = ({ w, h, type }: { w: string, h: string, type: string }) => (
     <div style={{
@@ -52,18 +52,24 @@ const CalendarCard: React.FC<CalendarCardProps> = ({ month, day, dayOfWeek, entr
     : `linear-gradient(to right, ${colorLeft} 45%, ${colorRight} 55%)`;
 
   return (
-    <div style={{
-      width: '280px',
-      height: '405px',
-      flexShrink: 0,
-      borderRadius: '14px',
-      padding: '5px',
-      background: outerBackground,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      transition: 'background 0.5s ease',
-    }}>
+    <div
+      onClick={onClick}
+      style={{
+        width: '280px',
+        height: '405px',
+        flexShrink: 0,
+        borderRadius: '14px',
+        padding: '5px',
+        background: outerBackground,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'background 0.5s ease, transform 0.2s ease',
+        cursor: onClick ? 'pointer' : 'default',
+        transform: isSelected ? 'scale(1.02)' : 'none',
+        border: isSelected ? '5px solid #2563eb' : 'none',
+      }}
+    >
 
       <div style={{
         width: '275px',
