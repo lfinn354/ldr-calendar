@@ -13,7 +13,7 @@ export const dummy_entry_data: Entry = {
         h: 'Today was a good day.'
     },
     color: '#FFD700',
-    photoUrl: 'https://pbs.twimg.com/media/Fpi4gncaIAA2kIv.jpg',
+    photoURL: 'https://pbs.twimg.com/media/Fpi4gncaIAA2kIv.jpg',
     trivia: 'Did you know? "Imagine" was inspired by Yoko Ono\'s book of the same name.'
 }
 
@@ -53,6 +53,6 @@ export const dummy_entries: Entries = {
     [getDateString(-2)]: [{
         ...dummy_entry_data,
         color: '#79b1d6',
-        photoUrl: 'https://i.redd.it/8slfcoxlzsg81.jpg'
+        photoURL: 'https://i.redd.it/8slfcoxlzsg81.jpg'
     }]
 };

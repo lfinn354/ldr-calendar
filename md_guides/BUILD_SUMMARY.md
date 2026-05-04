@@ -66,7 +66,7 @@ A fully functional React + Vite frontend for "The Digital Fridge" - a private, l
 
 ### 3. State Management ✓
 - ✅ React useState for entries
-- ✅ Mock data structure: `{ "YYYY-MM-DD": { song, reflection, photoUrl, trivia } }`
+- ✅ Mock data structure: `{ "YYYY-MM-DD": { song, reflection, photoURL, trivia } }`
 - ✅ Smart merge function for partial updates
 - ✅ Initial entry loading in modal
 
@@ -262,7 +262,7 @@ When you add an entry on April 20, 2026:
       l: "Missing you more today",
       s: "They surprised me with a gift"
     },
-    photoUrl: "https://example.com/photo.jpg",
+    photoURL: "https://example.com/photo.jpg",
     trivia: [
       { question: "What's my favorite color?", answer: "Blue" },
       { question: "When did we meet?", answer: "2020" },

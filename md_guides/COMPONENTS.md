@@ -21,7 +21,7 @@ DailyEntryModal.jsx (Data Entry Form)
 ### State
 ```javascript
 const [entries, setEntries] = useState({})
-// Structure: { "2026-04-20": { song, reflection, photoUrl, trivia } }
+// Structure: { "2026-04-20": { song, reflection, photoURL, trivia } }
 
 const [currentView, setCurrentView] = useState('calendar')
 // Values: 'today' | 'calendar' | 'archive'
@@ -147,7 +147,7 @@ const getEntryIndicators = (date) => {
   
   const indicators = []
   if (entry.song) indicators.push('song')         // Pink dot
-  if (entry.photoUrl) indicators.push('photo')    // Blue dot
+  if (entry.photoURL) indicators.push('photo')    // Blue dot
   if (entry.reflection?.h || ...) indicators.push('reflection')  // Amber dot
   
   return indicators
@@ -234,7 +234,7 @@ const openDateModal = (date) => {
 const [formData, setFormData] = useState({
   song: { title: '', art: '' },
   reflection: { h: '', l: '', s: '' },
-  photoUrl: '',
+  photoURL: '',
   trivia: [{}, {}, {}]
 })
 ```
@@ -302,7 +302,7 @@ const handlePhotoUpload = (e) => {
   reader.onloadend = () => {
     setFormData(prev => ({
       ...prev,
-      photoUrl: reader.result  // Data URL
+      photoURL: reader.result  // Data URL
     }))
   }
   reader.readAsDataURL(file)
