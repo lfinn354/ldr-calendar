@@ -21,7 +21,7 @@ export interface Entry {
 
 export type Entries = Record<string, Entry[]>
 
-export type View = 'today' | 'calendar' | 'archive' 
+export type View = 'notepad' | 'calendar' | 'archive' 
 
 export interface CalendarCardProps {
   month: string;
