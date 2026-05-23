@@ -35,7 +35,9 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
   const pigSizeDim = 64; 
 
   useEffect(() => {
-    const handleKeyPress = () => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() !== 'p' || event.repeat) return
+      
       const width = window.innerWidth;
       const batchSize = 10;
       const newPigs: Pig[] = [];
@@ -101,7 +103,7 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
           gap: '32px', 
         }}>
           {[
-            { id: 'today', label: 'Notepad' },
+            { id: 'notepad', label: 'Notepad' },
             { id: 'calendar', label: 'Calendar' },
             { id: 'archive', label: 'Archive' }
           ].map((item) => (
@@ -135,7 +137,7 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
       </header>
       <main>
         {currentView === 'calendar' && <CalendarGrid entries={entries} setEntries={setEntries} />}
-        {currentView === 'today' && <div>Notepad view</div>}
+        {currentView === 'notepad' && <div>Notepad view</div>}
         {currentView === 'archive' && <div>Archive view</div>}
       </main>
 
