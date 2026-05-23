@@ -4,4 +4,3 @@
 - with fully populated data, layout the card to look pretty
 - add Spotify API key, have search feature for albums / songs
 - input validation so only can edit on the ETC day-of
-- spawn 50 pigs with p key

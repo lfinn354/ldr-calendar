@@ -16,6 +16,7 @@ type Pig = {
   startX: number
   yLevel: number
   calculatedDuration: number
+  direction: 'left' | 'right'
 }
 
 const handleLogin = async () => {
@@ -31,37 +32,49 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
   const [entries, setEntries] = useState<Entries>(initialEntries);
   const [pigs, setPigs] = useState<Pig[]>([])
   const [screenWidth, setScreenWidth] = useState(window.innerWidth); // Track screen width
+  const pigSizeDim = 64; 
 
   useEffect(() => {
     const handleKeyPress = () => {
       const width = window.innerWidth;
-      const pigDim = 64;
       const batchSize = 10;
       const newPigs: Pig[] = [];
 
-      // Generate 50 unique pig configurations at once
       for (let i = 0; i < batchSize; i++) {
-        let startX = Math.random() * Math.max(0, (width * 0.75) - pigDim);
+        let startX = Math.random() * Math.max(0, width - pigSizeDim);
         let yLevel = Math.floor(Math.random() * 4) * 40;
         let randSpeed = Math.floor(Math.random() * 50) + 25;
 
-        const calculatedDuration = Math.random() < 0.75 ? (width - pigDim - startX) / randSpeed : 0;
+        let direction: 'left' | 'right';
+        switch (true) {
+          case startX <= width * 0.2:
+            direction = 'right';
+            break;
+          case startX >= width * 0.8:
+            direction = 'left';
+            break;
+          default:
+            direction = Math.random() < 0.5 ? 'left' : 'right';
+            break;
+        }
+
+        const distance = direction === 'right' ? (width - pigSizeDim - startX) : startX;
+        const calculatedDuration = Math.random() < 0.75 ? distance / randSpeed : 0;
 
         const newPig: Pig = {
           id: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}-${i}`,
           startX,
           yLevel,
-          calculatedDuration
+          calculatedDuration,
+          direction
         };
 
         newPigs.push(newPig);
 
         window.setTimeout(() => {
           setPigs((current) => current.filter((pig) => pig.id !== newPig.id));
-        }, 8000);
+        }, 10000);
       }
-
-      // Push all 50 pigs into the state in a single re-render
       setPigs((prev) => [...prev, ...newPigs]);
     };
 
@@ -75,17 +88,17 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        maxWidth: '1200px', // Prevents it from getting too wide
-        margin: '0 auto',   // Centers the entire header container
-        padding: '0 24px',  // Breathing room on the sides
+        maxWidth: '1200px', 
+        margin: '0 auto',   
+        padding: '0 24px',  
         height: '80px',
-        borderBottom: '1px solid #eee' // Subtle separator
+        borderBottom: '1px solid #eee' 
       }}>
         <h1 style={{ fontSize: '24px', margin: 0 }}>LTF's LDC</h1>
         <nav style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '32px', // Increased gap for a more airy feel
+          gap: '32px', 
         }}>
           {[
             { id: 'today', label: 'Notepad' },
@@ -105,7 +118,6 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
                 cursor: 'pointer',
                 position: 'relative',
                 transition: 'color 0.2s ease',
-                // Animated underline for the active link
                 borderBottom: currentView === item.id ? '2px solid #FFD700' : '2px solid transparent'
               }}
               onMouseOver={(e) => {
@@ -133,13 +145,15 @@ export default function Layout({ currentView, setCurrentView, initialEntries }: 
           className="easter-egg-pig-container"
           style={{
             left: `${pig.startX}px`,
-            '--bottom-px': `${pig.yLevel}px`, 
+            '--size-px': `${pigSizeDim}px`,
+            '--bottom-px': `${pig.yLevel}px`,
             '--walk-speed': `${pig.calculatedDuration}s`,
             '--screen-width': `${screenWidth}px`,
-            '--start-x': `${pig.startX}px`
+            '--start-x': `${pig.startX}px`,
+            '--walk-animation': pig.direction === 'left' ? 'pig-walk-left' : 'pig-walk-right'
           } as React.CSSProperties}
         >
-          <div className="pig-sprite" />
+          <div className={`pig-sprite ${pig.direction}`} />
         </div>
       ))}
 
